@@ -1,0 +1,116 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  s3-selectable-websocket-client
+
+Resources:
+  S3SelectableClientWebSocket:
+    Type: AWS::ApiGatewayV2::Api
+    Properties:
+      Name: S3SelectableClientWebSocket
+      ProtocolType: WEBSOCKET
+      RouteSelectionExpression: "$request.body.action"
+  ConnectRoute:
+    Type: AWS::ApiGatewayV2::Route
+    Properties:
+      ApiId: !Ref S3SelectableClientWebSocket
+      RouteKey: $connect
+      # No need for custom authorizer, use signed wss URL to connect
+      AuthorizationType: AWS_IAM
+      OperationName: ConnectRoute
+  DefaultRoute:
+    Type: AWS::ApiGatewayV2::Route
+    Properties:
+      ApiId: !Ref S3SelectableClientWebSocket
+      RouteKey: $default
+      AuthorizationType: NONE
+      OperationName: DefaultRoute
+      Target: !Join
+        - "/"
+        - - "integrations"
+          - !Ref DefaultInteg
+  DefaultInteg:
+    Type: AWS::ApiGatewayV2::Integration
+    Properties:
+      ApiId: !Ref S3SelectableClientWebSocket
+      Description: Default Integration
+      IntegrationType: AWS_PROXY
+      IntegrationUri:
+        Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${DefaultHandlerFunction.Arn}/invocations
+  Deployment:
+    Type: AWS::ApiGatewayV2::Deployment
+    DependsOn:
+      - DefaultRoute
+    Properties:
+      ApiId: !Ref S3SelectableClientWebSocket
+  Stage:
+    Type: AWS::ApiGatewayV2::Stage
+    Properties:
+      StageName: dev
+      Description: dev stage
+      DeploymentId: !Ref Deployment
+      ApiId: !Ref S3SelectableClientWebSocket
+  DefaultHandlerFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: dist/
+      Handler: index.handler
+      MemorySize: 256
+      Runtime: nodejs12.x
+      Timeout: 300
+      Environment:
+        Variables:
+          #AWS_NODEJS_CONNECTION_REUSE_ENABLED: 1
+          # Low concurrency tends to buffer data between Lambda calls even if the stream ends, use >= 10
+          PQUEUE_CONCURRENCY: 10
+          PQEUEU_TIMEOUT: 10000
+      Policies:
+        - Statement:
+            - Effect: Allow
+              Action:
+                - "execute-api:ManageConnections"
+              Resource:
+                - !Sub "arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${S3SelectableClientWebSocket}/*"
+        - Statement:
+            - Effect: Allow
+              Action:
+                - "glue:Get*"
+              Resource:
+                - !Sub "arn:aws:glue:${AWS::Region}:${AWS::AccountId}:catalog"
+                - !Sub "arn:aws:glue:${AWS::Region}:${AWS::AccountId}:database/*"
+                - !Sub "arn:aws:glue:${AWS::Region}:${AWS::AccountId}:table/*/*"
+        - Statement:
+            - Effect: Allow
+              Action:
+                - "s3:Get*"
+                - "s3:List*"
+              Resource:
+                - "*"
+  DefaultPermission:
+    Type: AWS::Lambda::Permission
+    DependsOn:
+      - S3SelectableClientWebSocket
+    Properties:
+      Action: lambda:InvokeFunction
+      FunctionName: !Ref DefaultHandlerFunction
+      Principal: apigateway.amazonaws.com
+
+Outputs:
+  DefaultHandlerFunctionArn:
+    Description: "Default WebSocket handler function ARN"
+    Value: !GetAtt DefaultHandlerFunction.Arn
+
+  WebSocketURI:
+    Description: "The WSS Protocol URI to connect to"
+    Value:
+      !Join [
+        "",
+        [
+          "wss://",
+          !Ref S3SelectableClientWebSocket,
+          ".execute-api.",
+          !Ref "AWS::Region",
+          ".amazonaws.com/",
+          !Ref "Stage",
+        ],
+      ]
