@@ -24,10 +24,16 @@
     "build": "yarn lint && yarn dist",
     "deploy": "yarn build && sam deploy"
   },
+  "husky": {
+    "hooks": {
+      "pre-commit": "yarn lint"
+    }
+  },
   "devDependencies": {
     "@aws-amplify/core": "^3.8.8",
     "aws-sdk": "^2.823.0",
     "eslint": "^7.18.0",
+    "husky": "^4.3.8",
     "prettier": "^2.2.1",
     "wscat": "^4.0.1"
   },
