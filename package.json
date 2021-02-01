@@ -12,7 +12,7 @@
   ],
   "author": "dforsber",
   "license": "MIT",
-  "private": "false",
+  "private": false,
   "scripts": {
     "install:sam": "brew tap aws/tap && brew install aws-sam-cli",
     "dist:node_modules": "mkdir -p dist && chmod 777 dist && ./scripts/install-dist-modules-for-lambda.sh",
