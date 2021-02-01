@@ -1667,10 +1667,10 @@
     chalk "^2.0.0"
     js-tokens "^4.0.0"
 
-"@dforsber/s3-selectable@^2.0.0":
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/@dforsber/s3-selectable/-/s3-selectable-2.0.0.tgz#4003bdf6b6524eb551b40706266ff063f7b3b760"
-  integrity sha512-bYyMMqu+oH/OpiHbzXfexXW5/9bZCcQlgwvJiXfiVbTHP03qVBhzaDwlhMuqNqLfLI4ilNT0oNFqFEH/Sg02Lg==
+"@dforsber/s3-selectable@^2.1.1":
+  version "2.1.1"
+  resolved "https://registry.yarnpkg.com/@dforsber/s3-selectable/-/s3-selectable-2.1.1.tgz#2bb05bb4e6576f613da0a196bf3f84b9a95674c6"
+  integrity sha512-+tzxGoBCs8XcuICzVTCN2CM3trVjuGFM/QeGjSH1yDE0UR844mK9puHEbO6wf+AUYFtPlx71v8284JCUkLuSIw==
   dependencies:
     "@aws-sdk/client-glue" "^3.2.0"
     "@aws-sdk/client-s3" "^3.2.0"
