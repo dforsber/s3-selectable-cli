@@ -16,19 +16,14 @@ jobs:
         run: |
           yarn install --frozen-lockfile --ignore-optional
           yarn lint
+          yarn dist:node_modules
           yarn build
 
   publish-npmjs:
     needs: build
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v1
-      - uses: actions/setup-node@v1
-        with:
-          node-version: 12
-          registry-url: https://registry.npmjs.org/
       - run: |
-          yarn build
           yarn publish --access public
         env:
           NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
@@ -37,15 +32,7 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v1
-        with:
-          node-version: 12
-          always-auth: true
-          registry-url: https://npm.pkg.github.com/
-      - name: Publish to GitHub packages repository
-        run: |
-          yarn build
+      - run: |
           yarn publish --access public
         env:
           NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}

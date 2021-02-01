@@ -61,7 +61,6 @@ Resources:
       Environment:
         Variables:
           #AWS_NODEJS_CONNECTION_REUSE_ENABLED: 1
-          # Low concurrency tends to buffer data between Lambda calls even if the stream ends, use >= 10
           PQUEUE_CONCURRENCY: 10
           PQEUEU_TIMEOUT: 10000
       Policies:
