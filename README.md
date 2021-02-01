@@ -25,7 +25,7 @@ You get the API ID from the deployment output.
 
 #  Default route invokes S3 Selectable Lambda asynchronously,
 #  and passes the WebSocket URL as a parameterand sends results to WebSocket
-% wscat -c `node src/wss-signer/sign_wss_url.js wss://8zs4y08ig2.execute-api.eu-west-1.amazonaws.com/dev`
+% wscat -c `node src/wss-signer/sign_wss_url.js wss://apiId.execute-api.eu-west-1.amazonaws.com/dev`
 Connected (press CTRL+C to quit)
 > EXPLAIN SELECT * FROM default.nyctaxis LIMIT 2
 < {
