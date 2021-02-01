@@ -15,7 +15,7 @@
   "private": "false",
   "scripts": {
     "install:sam": "brew tap aws/tap && brew install aws-sam-cli",
-    "dist:node_modules": "./scripts/install-dist-modules-for-lambda.sh",
+    "dist:node_modules": "mkdir -p dist && chmod 777 dist && ./scripts/install-dist-modules-for-lambda.sh",
     "dist": "ls dist/node_modules >/dev/null && cp src/default-handler/default_route_handler.js dist/index.js && cp src/default-handler/util.js dist/util.js",
     "prettier": "npx prettier --check src/**/*.js",
     "prettier:fix": "npx prettier --write src/**/*.js",
