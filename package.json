@@ -1,6 +1,6 @@
 {
   "name": "@dforsber/s3-selectable-cli",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "repository": {
     "type": "git",
     "url": "https://github.com/dforsber/s3-selectable-cli"
