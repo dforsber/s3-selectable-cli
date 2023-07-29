@@ -1,6 +1,6 @@
-const { SharedIniFileCredentials } = require("aws-sdk");
-const { Signer } = require("@aws-amplify/core");
-const process = require("process");
+const { SharedIniFileCredentials } = require('aws-sdk');
+const { Signer } = require('@aws-amplify/core');
+const process = require('process');
 
 async function getSignedWssUrl(wssUrl) {
   const creds = new SharedIniFileCredentials();

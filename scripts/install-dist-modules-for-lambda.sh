@@ -1,9 +1,9 @@
 #!/bin/bash
 
-docker run --rm -v $PWD:/var/task lambci/lambda:build-nodejs12.x /bin/bash -c "\
+docker run --entrypoint="" --rm -v $PWD:/var/task amazon/aws-lambda-nodejs:18 /bin/bash -c "\
   yum update -y && \
-  yum install -y make glibc-devel gcc patch && \
+  yum install -y git make glibc-devel gcc gcc-c++ patch python3 && \
   npm install -g yarn && \
-  yarn global add -y node-gyp node-pre-gyp && \
-  yarn --production --modules-folder dist/node_modules/\
-" 
+  yarn global add -y node-gyp @mapbox/node-pre-gyp && \
+  yarn install --production --modules-folder dist/node_modules/ \
+"
