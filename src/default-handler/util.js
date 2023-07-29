@@ -1,8 +1,5 @@
 const { promisify } = require('util');
-
-// NOTE: Not getting nodejs SDK v3 working.
 const { ApiGatewayManagementApi } = require('@aws-sdk/client-apigatewaymanagementapi');
-//const { ApiGatewayManagementApi } = require("aws-sdk");
 
 const { Buffer } = require('buffer');
 const { Glue } = require('@aws-sdk/client-glue');

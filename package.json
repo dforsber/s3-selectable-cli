@@ -31,8 +31,9 @@
     }
   },
   "devDependencies": {
+    "@aws-amplify/auth": "^5.5.5",
     "@aws-amplify/core": "^5.7.0",
-    "aws-sdk": "^2.1425.0",
+    "@aws-sdk/credential-providers": "^3.379.1",
     "eslint": "^8.46.0",
     "husky": "^8.0.0",
     "prettier": "^3.0.0",
@@ -42,7 +43,7 @@
     "@aws-sdk/client-apigatewaymanagementapi": "^3.379.1",
     "@aws-sdk/client-glue": "^3.379.1",
     "@aws-sdk/client-s3": "^3.379.1",
-    "@dforsber/s3-selectable": "^2.1.6",
+    "@dforsber/s3-selectable": "^2.2.0",
     "is-stream": "^2.0.0",
     "p-queue": "^6.6.2"
   }
